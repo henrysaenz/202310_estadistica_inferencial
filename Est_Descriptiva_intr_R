@@ -1,0 +1,290 @@
+Introducción a R: Estadística Descriptiva
+Natalia Hernández-Vargas
+¿Qué es R?
+R es un software gratis para la computación estadística y la visualización de datos. Ha sido desarrollado por la comunidad científica a nivel mundial que trabaja con datos y estadística. Más sobre el proyecto se puede encontrar en su página oficial: https://www.r-project.org/
+
+¿Cómo funciona R?
+R, además de ser un software, es un lenguaje de programación. Así que todo procedimiento que queramos hacer, debemos escribirlo en códigos y comandos específicos de este lenguaje. Utilizaremos el ambiente de trabajo RStudio para facilitar el manejo de resultados y datos que tengamos. Este lo podemos descargar siguiendo las instrucciones que están en Blackboard, o se puede utilizar online en https://rstudio.cloud/.
+
+Decimales en R
+Si queremos usar números decimales, R los separa con puntos, no con comas. Es decir, se escribe 1.5 en vez de 1,5 por ejemplo.
+
+Estadística descriptiva: análisis univariado numérico
+A continuación se presentan algunos comandos básicos para el análisis de datos univariados numéricos.
+
+Ingresar Datos
+Para ingresar datos numéricos manualmente, se deben digitar uno por uno separados por comas, así:
+
+datos <- c(4.0,1.3,3.5,4.2,1.3,3.8,3.2,3.5,1.8,4.0)
+Estos datos fueron guardados en una variable llamada datos y son notas del primer parcial de 10 estudiantes. Los decimales son limitados por puntos como mencionamos en el apartado pasado. El símbolo <- sirve para asignar valores a variables como es en este caso datos. El nombre es arbitrario, puede contener todas las letras y números que se quiera y la mayoría de signos (exceptuando comas y caracteres especiales como tildes) siempre y cuando no haya espacio entre los caracteres.
+
+Cuando se ejecuta este código no hay un resultado en la consola, debido que esta acción es un guardar aquí.
+
+Resumen Estadístico
+Para calcular el resumen de los cinco números (mínimo, máximo y los tres cuartiles) y la media de una variable, se utiliza el siguiente comando:
+
+summary(datos)
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    1.30    2.15    3.50    3.06    3.95    4.20
+Para tener en cuenta: De aquí en adelante en este instructivo lo que salga con ## al inicio, es el resultado que dará la consola al comando seleccionado.
+
+Para calcular la media (mean), varianza (variance) y desviación estándar (standard deviation) por separado se utilizan los siguientes comandos:
+
+mean(datos)
+## [1] 3.06
+var(datos)
+## [1] 1.311556
+sd(datos)
+## [1] 1.145232
+Representaciones gráficas
+Para graficar un histograma de los datos:
+
+hist(datos)
+
+
+Si quisiéramos cambiar el título, usaríamos un argumento llamado main escribiendo el título entre comillas:
+
+hist(datos, main = "Aqui escribo lo que quiera")
+
+
+Asimismo, podemos cambiar las etiquetas de los ejes con los argumentos xlab y ylab escribiendo los nombres entre comillas:
+
+hist(datos, xlab = "nombre de la variable", ylab = "frecuencia")
+
+
+Notemos que en este ultimo histograma se cambiaron las etiquetas pero no el titulo. Por cada comando el hara unicamente lo que se le pida.
+
+Finalmente, si es de nuestro interés cambiar el color del histograma:
+
+hist(datos, col="yellow")
+
+
+Puedes probar otros colores en inglés, si no, puedes ir a una paleta de colores como esta y escribir el código del color elegido de la forma #XXXXXX entre las comillas. Por ejemplo:
+
+hist(datos, col="#33cccc")
+
+
+Si queremos conocer todos los atributos que podemos cambiar en el histograma (color de los otros elementos como ejes, lineas de las barras, etc.), podemos acceder a la ayuda de R con ayuda del signo ? asi:
+
+?hist
+## starting httpd help server ... done
+Para graficar un diagrama de caja y bigotes de los datos:
+
+boxplot(datos)
+
+
+Para graficar un diagrama horizontal de caja y bigotes de los datos:
+
+boxplot(datos,horizontal=TRUE)
+
+
+De igual manera que con el histograma, a este diagrama tambien le podemos modificar sus atributos asi:
+
+boxplot(datos, horizontal=TRUE, main="titulo que quieras", xlab= "nombre de la variable",
+        col="#33cccc")
+
+
+Estadística descriptiva: análisis univariado categórico
+A continuación se presentan algunos comandos básicos para el análisis de datos univariados categóricos.
+
+Ingresar Datos
+Para ingresar datos categóricos manualmente, se deben digitar uno por uno separados por comas y entre comillas, así:
+
+ejercicio <- c("poco","algo","mucho","ocasional","mucho","mucho","poco","algo","algo","mucho")
+En este caso, tenemos respuestas a la pregunta sobre qué tanto ejercicio hace a la semana.
+
+Al igual que el ambiente pasado, cuando se ejecuta este código no hay un resultado en la consola, debido que esta acción es un guardar aquí.
+
+Resumen Estadístico
+Para esta variable al ser categórica, no hay un resumen de los cinco números (mínimo, máximo y los tres cuartiles) ni una media. El comando summary presenta la siguiente información en este caso:
+
+summary(ejercicio)
+##    Length     Class      Mode 
+##        10 character character
+Esto es la cantidad de datos que tiene la variable (length) y el tipo (character se refiere a que contiene caracteres y no números, es decir, categórica.)
+
+Para hacer una tabla de frecuencia usamos el comando table:
+
+table(ejercicio)
+## ejercicio
+##      algo     mucho ocasional      poco 
+##         3         4         1         2
+Estas son las frecuencias absolutas (conteos) por categorúa.
+
+Con base en esta misma tabla, podemos calcular las frecuencias relativas (porcentajes). Para esto, debemos dividir cada valor entre la cantidad total de elementos. Con el comando length podemos calcular esta cantidad, así que para calcular lo deseado, se escribe así:
+
+table(ejercicio)/length(ejercicio)
+## ejercicio
+##      algo     mucho ocasional      poco 
+##       0.3       0.4       0.1       0.2
+Estos valores son porcentajes expresados en decimales. Para que sean en términos de porcentaje los multiplicamos por 100:
+
+table(ejercicio)/length(ejercicio)*100
+## ejercicio
+##      algo     mucho ocasional      poco 
+##        30        40        10        20
+Representaciones gráficas
+Para graficar un diagrama circular:
+
+pie(table(ejercicio))
+
+
+Para cambiar los colores de las secciones del diagrama, se hace una lista de los colores que se quieren usar. Esa lista se arma de la misma forma que guardamos los datos relacionados a una variable categórica:
+
+pie(table(ejercicio),col=c("blue","red","green","magenta"))
+
+
+Al igual que en el ambiente pasado, los colores pueden escribirse en el formato #XXXXXX para escoger cualquier color.
+
+En este caso, la variable es a su vez ordinal, por lo tanto es recomendable usar un diagrama de barras preferiblemente:
+
+barplot(table(ejercicio))
+
+
+Si queremos que las barras esten en un orden específico, debemos reescribir la variable como factor (es decir, categórica) indicando los niveles (levels) en su respectivo orden:
+
+ejercicio <- factor(ejercicio, levels=c("poco","algo","ocasional","mucho"))
+barplot(table(ejercicio))
+
+
+Similar a los gráficos pasados, podemos cambiar la etiqueta horizontal con el argumento xlab y el color de las barras con el argumento col.
+
+ejercicio <- factor(ejercicio, levels=c("poco","algo","ocasional","mucho"))
+barplot(table(ejercicio), xlab="Frecuencia de hacer ejercicio",col="#33cccc")
+
+
+En este caso, escogimos el mismo color para todas las barras. Es posible hacer una lista de colores para asignarle colores diferentes a cada una. Intenta hacerlo, cambia la opción del color y ponle colores diferentes a las barras.
+
+Estadística descriptiva: análisis bivariado numérico
+El análisis bivariado numérico tiene como objetivo analizar la relación entre dos variables numéricas. Específicamente, es común analizar la relación lineal entre las dos variables. Para esto, se analiza el coeficiente de correlación de Pearson.
+
+Ingresar datos
+Para este ambiente, son necesarias dos variables de tipo numérico. A modo de ejemplo tenemos nuevamente una variable con notas de 20 estudiantes guardada en notas y otra variable con las horas de sueńo de estos estudiantes guardada en dormir. El primer estudiante de la lista obtuvo 4.0 en el parcial y durmió 5.5 horas la noche anterior, y así sucesivamente.
+
+Estas variables pueden organizarse en un conjunto de datos con el comando data.frame. Así se conforma una tabla donde las columnas organizan los datos por variable y la filas los organizan por individuo observado.
+
+notas <- c(4.0,1.3,3.5,4.2,1.3,3.8,3.2,3.5,1.8,4.0,4.0,1.4,3.6,4.3,1.4,3.9,3.3,3.6,1.9,4.1)
+dormir <- c(5.5,5,7.5,6.5,5,3.5,5.5,4.5,3.5,2.5,5,6,5.5,4.5,4.5,4,4,5,6.5,6.5)
+bdd <- data.frame(notas,dormir)
+Podemos ver la diferencia si vemos lo que hay en cada uno de los elementos creados.
+
+Así se ve una sola variable:
+
+notas
+##  [1] 4.0 1.3 3.5 4.2 1.3 3.8 3.2 3.5 1.8 4.0 4.0 1.4 3.6 4.3 1.4 3.9 3.3 3.6 1.9
+## [20] 4.1
+El número o números que aparecen entre corchetes ([1]) indica la posición del elemento que empieza en esa fila. Sirve para guiarse si es necesario, de lo contrario puede ignorarse.
+
+Así se ve un conjunto de datos:
+
+bdd
+##    notas dormir
+## 1    4.0    5.5
+## 2    1.3    5.0
+## 3    3.5    7.5
+## 4    4.2    6.5
+## 5    1.3    5.0
+## 6    3.8    3.5
+## 7    3.2    5.5
+## 8    3.5    4.5
+## 9    1.8    3.5
+## 10   4.0    2.5
+## 11   4.0    5.0
+## 12   1.4    6.0
+## 13   3.6    5.5
+## 14   4.3    4.5
+## 15   1.4    4.5
+## 16   3.9    4.0
+## 17   3.3    4.0
+## 18   3.6    5.0
+## 19   1.9    6.5
+## 20   4.1    6.5
+Esta es la estructura más común para guardar y organizar un conjunto de datos. Habrá ocasiones en los que tendremos muchas variables y solo requeriremos trabajar con un par de ellas o, como en este caso, solo con dos. Para usar una sola variable de una base de datos se utiliza el símbolo $ así:
+
+bdd$notas
+##  [1] 4.0 1.3 3.5 4.2 1.3 3.8 3.2 3.5 1.8 4.0 4.0 1.4 3.6 4.3 1.4 3.9 3.3 3.6 1.9
+## [20] 4.1
+Si notamos vuelve a ser la misma vista de notas.
+
+En este instructivo hemos estado creando los datos ingresándolos manualmente. Más adelante aprenderemos cómo importarlos de algún archivo externo.
+
+Resumen estadístico: Coeficiente de Correlación de Pearson
+El coeficiente de correlación de Pearson es un valor del que se puede interpretar si dos variables tienen una relación lineal entre ellas. La fuerza de esta correlación también se puede interpretar, es decir, qué tanto los valores de una se comportan proporcionalmente a la otra.
+
+Para calcular el coeficiente de correlacion entre las notas y las horas de sueńo:
+
+cor(bdd$notas,bdd$dormir)
+## [1] -0.0350576
+Sin importar las variables que se tengan, los valores posibles que puede obtener este coeficiente van entre -1 y 1. La interpretación del coeficiente se divide en tres posibilidades:
+
+Cuando el resultado es positivo (mayor que 0 hasta 1), se habla de correlación positiva.
+
+Cuando el resultado es negativo (desde -1 hasta menor que 0), se habla de correlación negativa.
+
+Cuando el resultado es cero o muy cercano a cero, se habla de que no hay correlación.
+
+En el ejemplo, el coeficiente es negativo, por lo que puede decirse que es una correlación negativa, es decir, que notas altas estan asociadas a pocas horas de sueńo, y viceversa (notas bajas estan asociadas a muchas horas de sueńo).
+
+Sin embargo, el valor del coeficiente está más cerca del cero que del -1, por lo tanto se habla de que la correlación es más bien débil. Cada área del conocimiento tiene reglas para determinar la fuerza de la correlación. En ciencias sociales, por ejemplo, pueden ser más flexibles al momento de hablar de una correlación fuerte por la misma naturaleza de las variables.
+
+En ocasiones, nuestro interés sera calcular la correlación de varios pares de variables y estos resultados son organizados en las llamadas tablas de correlación, es común encontrar ejemplos de estos cálculos en artículos científicos. Usando nuestro mismo ejemplo pero desde el conjunto de datos completo, se ven así:
+
+cor(bdd)
+##             notas     dormir
+## notas   1.0000000 -0.0350576
+## dormir -0.0350576  1.0000000
+Podemos notar que el mismo valor aparece en los cruces de las dos variables y un 1 en donde se cruzan con ellas mismas. Esto sirve para mencionar dos características de la correlación:
+
+La correlación no implica causalidad, es decir, no sabemos si una variable causa a la otra, solo sabemos que están asociadas.
+
+La correlacion perfecta, es decir 1 o -1, no es algo observable entre variables diferentes. El 1 solo ocurre cuando ambas variables son iguales como es el caso de calcular la correlacion de notas con ella misma.
+
+Las tablas de correlación son útiles cuando tenemos más de dos variables en el conjunto de datos y queremos calcular todos los coeficientes de correlación posibles.
+
+Representaciones gráficas
+El diagrama de dispersión es la representación gráfica que permite evidenciar visualmente la correlación de dos variables. Para graficarlo se utiliza el comando plot así:
+
+plot(bdd$notas,bdd$dormir)
+ En este caso, concuerda con que la correlación no haya sido fuerte, debido a que la nube de puntos no tiene una tendencia lineal.
+
+Nuevamente podemos hacer cambios de forma en el gráfico con los argumentos conocidos anteriormente:
+
+plot(bdd$notas,bdd$dormir,col="blue",xlab="Notas",ylab="Dormir",pch=19)
+ Con pch se puede cambiar el estilo del punto, aquí encontramos más opciones.
+
+Estadística descriptiva: análisis bivariado categórico
+El análisis bivariado categórico tiene como objetivo analizar la relación entre dos variables categóricas. Para esto, se analiza la tabla de contingencia que presenta el cruce de las variables.
+
+Ingresar datos
+Para este caso analizaremos la relación entre la frecuencia de hacer ejercicio con la variable ejercicio y fumar o no hacerlo con la variable fuma. Construimos la base de datos bdd2 para relacionar cada registro con un individuo (El primer individuo dijo hacer poco ejercicio y que sí fuma).
+
+ejercicio <- c("poco","algo","mucho","ocasional","mucho","mucho","poco","algo","algo","mucho")
+fuma <- c("Si","No","No","Si","Si","Si","No","No","No","Si")
+bdd2 <- data.frame(ejercicio,fuma)
+Intenta describir qugé hacen los siguientes comandos.
+
+Resumen estadístico: Tabla de contingencia
+table(bdd2)
+##            fuma
+## ejercicio   No Si
+##   algo       3  0
+##   mucho      1  3
+##   ocasional  0  1
+##   poco       1  1
+table(bdd2$ejercicio,bdd2$fuma)
+##            
+##             No Si
+##   algo       3  0
+##   mucho      1  3
+##   ocasional  0  1
+##   poco       1  1
+table(bdd2$fuma,bdd2$ejercicio)
+##     
+##      algo mucho ocasional poco
+##   No    3     1         0    1
+##   Si    0     3         1    1
+Representaciones gráficas
+barplot(table(bdd2$ejercicio,bdd2$fuma))
+
+
+barplot(table(bdd2$ejercicio,bdd2$fuma),beside=TRUE)
