@@ -1,0 +1,51 @@
+library(readxl)
+datos <- read_excel("Plasticidad Neuronal SNEK.xlsx")
+View(datos)
+library(ggplot2)
+library(dplyr)
+library(hrbrthemes)
+donut <- function(vector, fill, line, title) {
+cat <- unique(vector)
+count <- c( length(vector[vector == cat[1]]), length(vector[vector == cat[2]]) )
+donut <- data.frame(
+category = cat,
+count = count
+)
+# Compute percentages
+donut$fraction <- donut$count / sum(donut$count)
+# Compute the cumulative percentages (top of each rectangle)
+donut$ymax <- cumsum(donut$fraction)
+# Compute the bottom of each rectangle
+donut$ymin <- c(0, head(donut$ymax, n=-1))
+# Compute label position
+donut$labelPosition <- (donut$ymax + donut$ymin) / 2
+# Compute a good label
+donut$label <- paste0(donut$category, "\n", donut$count)
+# Make the plot
+ggplot(donut, aes(ymax=ymax, ymin=ymin, xmax=4, xmin=3, fill=category)) +
+geom_rect() +
+labs(title=title) +
+geom_text( x=1.5, aes(y=labelPosition, label=label, color=colors), size=6) +
+scale_fill_manual(values = fill) +
+scale_color_manual(values = line) +
+coord_polar(theta="y") +
+xlim(c(0, 4)) +
+theme_void() +
+theme(legend.position = "none")
+}
+summary(datos)
+datos %>% ggplot(aes(x=Score)) +
+geom_density(fill="#FEFFBF", color="#EAEEAE", alpha=0.7) + theme_bw() +
+labs(x="Puntaje", y="Frecuencia", title = "Frecuencias del puntaje obtenido.")
+datos %>% ggplot(aes(x=Edad)) +
+geom_density(fill="#FCDCDF", color="#ECBCBF", alpha=0.9) + theme_bw() +
+labs(x="Edad", y="Frecuencia", title = "Frecuencias de las edades.")
+datos %>% ggplot(aes(x=60/Treac)) +
+geom_density(fill="#F498C2", color="#E180B2", alpha=0.7) + theme_bw() +
+labs(x="Tiempo de reación", y="Frecuencia", title = "Frecuencias de los tiempos de reación.")
+datos %>% ggplot(aes(x=CantObs)) +
+geom_density(fill="#C997D6", color="#A977C6", alpha=0.7) + theme_bw() +
+labs(x="Cantidad de obstaculos", y="Frecuencia", title = "Frecuencias de la cantidad de obstáculos.")
+donut(datos$Sexo, c( "#B0EFEF","#FFB7B2" ), c("#28262b", "#28262b"), "Proporción de géneros")
+donut(datos$Sexo, c( "#B0EFEF","#FFB7B2" ), c("#28262b", "#28262b"), "Proporción de géneros")
+donut(datos$AntC, c("#C5EBFE", "#A5F8CE"), c("#28262b", "#28262b"), "Proporción de antecedentes")
