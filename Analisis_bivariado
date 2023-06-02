@@ -1,0 +1,416 @@
+Instructivo 3: Análisis Bivariado
+AUTHOR
+Dipl.-Math. Natalia Hernández Vargas
+
+Para estos análisis bivariados se trabajará con un ejemplo de los resultados obtenidos por los estudiantes de un semestre anterior en las pruebas de Kahoot realizadas. Para esto, se utilizará la base de datos DatosAprendizaje.xlsx que contiene las siguientes variables:
+
+names(DatosAprendizaje)
+
+[1] "Genero"     "Repitente"  "P1"         "Kahootpre"  "Kahootpost"
+# Nota: el comando names() sirve para conocer los nombres de las variables de
+# una base de datos.
+
+donde
+
+Genero es la variable del género del estudiante con opciones F como femenino y M como masculino.
+
+Repitente es la variable de si el estudiante está repitiendo el curso o no.
+
+P1 es la variable de la nota obtenida por el estudiante en el primer parcial.
+
+Kahootpre es la variable del puntaje obtenido en un quiz de Kahoot al principio de la clase previo a la explicación de lo evaluado.
+
+Kahootpost es la variable del puntaje obtenido en el mismo quiz de Kahoot realizado al final de la explicación correspondiente.
+
+Para importar estos datos a R es necesario hacerlo desde la opción Import Dataset. Para seguir el ejemplo, debe llamarla DatosAprendizaje.
+
+Análisis bivariado: categórico - categórico
+Asociación de variables categóricas
+Se quiere determinar si hay relación entre la repitencia del curso y el género del estudiante.
+
+Condiciones (Supuestos) y Distribución muestral
+Si cada casilla de la tabla de contingencia tiene al menos 5 casos, se asume que la distribución muestral del estadístico es \chi^2 con (f - 1)*(c - 1) grados de libertad, donde f es la cantidad de filas y c la cantidad de columnas de la tabla de contingencia.
+
+Por lo tanto, es necesario comprobar si la tabla de contingencia del caso de estudio tiene al menos 5 casos por cada casilla:
+
+table(DatosAprendizaje$Genero,DatosAprendizaje$Repitente)
+
+   
+    No Sí
+  F 23  9
+  M  4  4
+Como la frecuencia de casos de estudiantes hombres que están repitiendo o no están repitiendo el curso es 4 en ambas casillas, teóricamente no es correcto asumir que la distribución muestral del estadístico \chi^2 con 1 grado de libertad.
+
+Pregunta de aplicación: ¿Por que la distribución muestral en este caso tiene 1 grado de libertad?
+
+Las soluciones para este problema pueden ser:
+
+Agrupar categorías para que se logre el conteo mínimo necesario por casilla.
+Considerar trabajar con tamaños de muestra más grandes para garantizar esos mínimos necesarios.
+En este caso, vamos a cometer la falta de asumir la distribución muestral mencionada, debido a que estas soluciones no son viables. El interés de este instructivo es aprender los comandos necesarios para el análisis.
+
+Pregunta de evaluación: ¿Por qué las soluciones no son viables en este caso?
+
+Prueba de Hipótesis
+Planteamiento de Hipótesis
+Hipótesis científica: Hay relación entre el género del estudiante y si repite o no el curso.
+
+Hipótesis estadística: Hay asociación entres las variables género y repitente.
+
+Hipótesis nula: Hay independencia entre las variables género y repitente.
+
+Comando en R
+chisq.test(DatosAprendizaje$Genero,DatosAprendizaje$Repitente)
+
+
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  DatosAprendizaje$Genero and DatosAprendizaje$Repitente
+X-squared = 0.57692, df = 1, p-value = 0.4475
+# Nota: Aparece un mensaje de advertencia de que la aproximación del estadístico
+# puede estar incorrecta por la violación de la condición de al menos 5 casos por casilla.
+
+Estadístico de Prueba
+Es un valor de \chi^2 con 1 grado de libertad.
+
+Decisión
+Como el p-valor es 0.4475, no se puede rechazar la hipótesis nula con cualquiera de los niveles de significancia posibles (1%, 5%, 10%).
+
+Conclusión
+Como no se rechaza la hipótesis nula:
+
+No hay asociación estadísticamente significativa entre las variables género y repitente.
+
+Comparación de proporciones
+En comparación de proporciones, se considera éxito la cantidad de individuos por población de interés con el atributo analizado, y fracaso la cantidad de individuos por población de interés sin el atributo analizado.
+
+Se quiere comparar las proporciones de repitencia entre poblaciones de estudiantes hombres y mujeres.
+
+En este caso, se considera éxito la cantidad de individuos repitentes por población, y fracaso la cantidad de invidivuos no repitentes por población.
+
+Condiciones (Supuestos) y Distribución muestral.
+Es necesario comprobar si la cantidad de éxitos y fracasos por muestra son al menos 5. Esto se puede observar en una tabla de contingencia como el caso pasado:
+
+table(DatosAprendizaje$Genero,DatosAprendizaje$Repitente)
+
+   
+    No Sí
+  F 23  9
+  M  4  4
+La muestra de mujeres tiene 9 éxitos y 23 fracasos, la muestra de hombres tiene 4 éxitos y 4 fracasos.
+
+Como la cantidad de éxitos y de fracasos de estudiantes hombres no supera los 5 casos, teóricamente no es correcto asumir que la distribución muestral del estadístico es normal.
+
+En este caso, vamos a cometer la falta de asumir la distribución muestral mencionada. El interés de este instructivo es aprender los comandos necesarios para el análisis.
+
+Intervalos de Confianza
+Proporción de repitentes hombres
+
+p_1 <- 4/8
+
+Pregunta de aplicación: ¿Por qué 4/8? Pista: Ver la tabla de contingencia anterior.
+
+Proporción de repitentes mujeres
+
+p_2 <- 9/32
+
+Pregunta de aplicación: ¿Por qué 9/32? Pista: Ver la tabla de contingencia anterior.
+
+Error muestral:
+
+error_muestral <- sqrt(p_1*(1-p_1)/8 + p_2*(1-p_2)/32)
+
+Pregunta de aplicación: ¿Por qué 8 y 32? Pista: Ver la tabla de contingencia anterior.
+
+El intervalo de confianza del 95% de la diferencia de las proporciones de repitentes esté entre
+
+(p_1 - p_2) - error_muestral * qnorm(0.975)
+
+[1] -0.161135
+y
+
+(p_1 - p_2) + error_muestral * qnorm(0.975)
+
+[1] 0.598635
+Interpretación de Intervalos de Confianza
+La interpretación de intervalos de confianza de comparación de proporciones hace referencia al resultado de la diferencia entre ambos parámetros, es decir, al resultado de restar uno de otro.
+
+En caso de tener todos los datos de ambas poblaciones por medio de un censo
+
+Cuando los parámetros son iguales, la diferencia es igual a cero.
+
+Cuando los parámetros son diferentes, la diferencia puede ser positiva o negativa.
+
+Si es positiva, implica que el primer parámetro es mayor que el segundo.
+Si es negativa, implica que el primer parámetro es menor que el segundo.
+Estimación de diferencia de proporciones
+
+Por lo tanto,
+
+Cuando el intervalo de confianza contiene el cero, la diferencia no es significativa.
+Cuando el intervalo de confianza no contiene el cero y es un rango de valores positivos, la diferencia es significativa siendo el primer parámetro mayor que el segundo.
+Cuando el intervalo de confianza no contiene el cero y es un rango de valores negativos, la diferencia es significativa siendo el primer parámetro menor que el segundo.
+En el caso de las proporciones de repitentes hombres y repitentes mujeres, la diferencia de proporciones no es significativa, debido a que el intervalo de confianza está entre -0,161 y 0,599 (el cero está incluido).
+
+Prueba de Hipótesis
+Planteamiento de Hipótesis
+Hipótesis científica: Hay diferencia entre la incidencia de repitencia entre hombres y mujeres.
+
+Hipótesis estadística: Hay diferencia entre las proporciones de repitencia de los hombres y las mujeres.
+
+Hipótesis nula: No hay diferencia entre las proporciones de repitencia de los hombres y las mujeres.
+
+Comando en R
+# Nota: El primer conjunto de números son el conteo de éxitos, el segundo conjunto son los
+# tamaños de muestra respectivos.
+
+prop.test(c(9,4),c(32,8))
+
+
+    2-sample test for equality of proportions with continuity correction
+
+data:  c(9, 4) out of c(32, 8)
+X-squared = 0.57692, df = 1, p-value = 0.4475
+alternative hypothesis: two.sided
+95 percent confidence interval:
+ -0.67676  0.23926
+sample estimates:
+ prop 1  prop 2 
+0.28125 0.50000 
+Estadístico de Prueba
+Es un valor de \chi^2 con 1 grado de libertad.
+
+Nota: El valor de z que se propone en la distribución muestral es análogo al que utiliza R, el estadístico \chi^2 es igual al cuadrado del estadístico z correspondiente.
+
+Decisión
+Como el p-valor es 0.4475, no se puede rechazar la hipótesis nula con cualquier de los niveles de significancia posibles (1%, 5%, 10%).
+
+Conclusión
+Como no se rechaza la hipótesis nula:
+
+No hay diferencia estadísticamente significativa entre las proporciones de repitencia de los hombres y las mujeres.
+
+Análisis bivariado: categórico - numérico
+Comparación de medias para muestras independientes
+Se quiere comparar la tendencia de puntajes en un quiz de Kahoot obtenido por estudiantes hombres y mujeres, con el fin de determinar si hay diferencia entre las poblaciones.
+
+Condiciones (Supuestos) y Distribución muestral.
+Es necesario comprobar si las poblaciones de las que provienen las muestras son normales.
+
+Por el momento se va a asumir que sí lo son, para poder utilizar el método propuesto.
+
+Ver en el próximo instructivo: Prueba de Normalidad.
+
+Intervalos de Confianza
+Para volver la muestra inicial en muestras independientes, se utiliza la opción de filtro:
+
+Para crear la muestra de hombres filtrando la base de datos por género (variable categórica que clasifica):
+
+Datos_hombres <- DatosAprendizaje[DatosAprendizaje$Genero == "M",]
+
+Para crear la muestra de mujeres filtrando la base de datos por género (variable categórica que clasifica):
+
+Datos_mujeres <- DatosAprendizaje[DatosAprendizaje$Genero == "F",]
+
+Error muestral:
+
+error_muestral <- sqrt(var(Datos_hombres$Kahootpre)/8 +var(Datos_mujeres$Kahootpre)/32)
+
+El intervalo de confianza del 95% de la diferencia de las medias de puntajes obtenidos por hombres y mujeres está entre
+
+(mean(Datos_hombres$Kahootpre) - mean(Datos_mujeres$Kahootpre)) - 
+                               error_muestral * qt(0.975,32+8-2)
+
+[1] -3475.039
+y
+
+(mean(Datos_hombres$Kahootpre) - mean(Datos_mujeres$Kahootpre)) +
+                              error_muestral * qt(0.975,32+8-2)
+
+[1] -44.96106
+Interpretación de Intervalos de Confianza
+La interpretación de intervalos de confianza de comparación de medias hace referencia al resultado de la diferencia entre ambos parámetros, es decir, al resultado de restar uno de otro.
+
+En caso de tener todos los datos de ambas poblaciones por medio de un censo
+
+Cuando los parámetros son iguales, la diferencia es igual a cero.
+
+Cuando los parámetros son diferentes, la diferencia puede ser positiva o negativa.
+
+Si es positiva, implica que el primer parámetro es mayor que el segundo.
+Si es negativa, implica que el primer parámetro es menor que el segundo.
+Estimación de diferencia de medias
+
+Por lo tanto,
+
+Cuando el intervalo de confianza contiene el cero, la diferencia no es significativa.
+Cuando el intervalo de confianza no contiene el cero y es un rango de valores positivos, la diferencia es significativa siendo el primer parámetro mayor que el segundo.
+Cuando el intervalo de confianza no contiene el cero y es un rango de valores negativos, la diferencia es significativa siendo el primer parámetro menor que el segundo.
+En el caso de las medias del puntaje obtenido por hombres y mujeres, la diferencia de medias es significativa, debido a que el intervalo de confianza está entre -3475,039 y -44,961 (el cero no está incluido), siendo la media de hombres (primer parámetro) menor que la media de mujeres (segundo parámetro) por ser un rango de valores negativos.
+
+Prueba de Hipótesis
+Planteamiento de Hipótesis
+Hipótesis científica: Hay diferencia entre el rendimiento promedio entre hombres y mujeres según el puntaje obtenido en el quiz Kahoot.
+
+Hipótesis estadística: Hay diferencia entre las medias del puntaje obtenido de los hombres y las mujeres.
+
+Hipótesis nula: No hay diferencia entre las medias del puntaje obtenido de los hombres y las mujeres.
+
+Comando en R
+t.test(DatosAprendizaje$Kahootpre ~ DatosAprendizaje$Genero)
+
+
+    Welch Two Sample t-test
+
+data:  DatosAprendizaje$Kahootpre by DatosAprendizaje$Genero
+t = 2.0775, df = 12.675, p-value = 0.05868
+alternative hypothesis: true difference in means between group F and group M is not equal to 0
+95 percent confidence interval:
+  -75.01522 3595.01522
+sample estimates:
+mean in group F mean in group M 
+       8120.625        6360.625 
+Estadístico de Prueba
+Es un valor de t con n_1 + n_2 - 2 grado de libertad.
+
+Nota: Los grados de libertad propuestos por R suelen ser distintos a los teóricos n_1 + n_2 -2, porque se basa en una aproximación distinta.
+
+Decisión
+Como el p-valor es 0.05868:
+
+No se puede rechazar la hipótesis nula con niveles de significancia de 1% y 5%.
+Se rechaza la hipótesis nula con un nivel de significancia de 10%.
+Conclusión
+Con niveles de significancia de 1% y 5%:
+
+No hay diferencia estadísticamente significativa entre las medias del puntaje obtenido de los hombres y las mujeres.
+
+Con un nivel de significancia de 10%:
+
+Hay diferencia estadísticamente significativa entre las medias del puntaje obtenido de los hombres y las mujeres.
+
+Análisis bivariado: numérico - numérico
+Comparación de medias para muestras dependientes
+Se quiere conocer si la explicación de un tema se refleja en el rendimiento de los estudiantes. Para esto, se comparan los resultados del quiz hecho al principio de la clase con los resultados del segundo quiz hecho luego de la explicación.
+
+Condiciones (Supuestos) y Distribución muestral.
+Es necesario comprobar si las poblaciones de las que provienen las variables son normales.
+
+Por el momento se va a asumir que sí lo son, para poder utilizar el método propuesto.
+
+Ver en el próximo instructivo: Prueba de Normalidad.
+
+Intervalos de Confianza
+Para construir la muestra de las diferencias por individuo, se resta una de otra:
+
+Diferencia <- DatosAprendizaje$Kahootpost - DatosAprendizaje$Kahootpre
+
+Error muestral:
+
+error_muestral <- sd(Diferencia)/sqrt(40)
+
+El intervalo de confianza del 95% de la diferencia de las medias de puntajes obtenidos por hombres y mujeres esté entre
+
+mean(Diferencia) - error_muestral * qt(0.975,40-1)
+
+[1] 821.0698
+y
+
+mean(Diferencia) + error_muestral * qt(0.975,40-1)
+
+[1] 2706.78
+Interpretación de Intervalos de Confianza
+La interpretación de intervalos de confianza de comparación de medias hace referencia al resultado de la diferencia entre ambos parámetros, es decir, al resultado de restar uno de otro.
+
+En caso de tener todos los datos de ambas poblaciones por medio de un censo
+
+Cuando los parámetros son iguales, la diferencia es igual a cero.
+
+Cuando los parámetros son diferentes, la diferencia puede ser positiva o negativa.
+
+Si es positiva, implica que el primer parámetro es mayor que el segundo.
+Si es negativa, implica que el primer parámetro es menor que el segundo.
+Estimación de diferencia de medias
+
+Por lo tanto,
+
+Cuando el intervalo de confianza contiene el cero, la diferencia no es significativa.
+Cuando el intervalo de confianza no contiene el cero y es un rango de valores positivos, la diferencia es significativa siendo el primer parámetro mayor que el segundo.
+Cuando el intervalo de confianza no contiene el cero y es un rango de valores negativos, la diferencia es significativa siendo el primer parámetro menor que el segundo.
+En el caso de de la diferencia de medias del puntaje obtenido en el Kahoot previo y posterior, la diferencia de medias es significativa, debido a que el intervalo de confianza está entre 821.07 y 2706.78 (el cero no está incluido), siendo la media del Kahoot posterior (primer parámetro) mayor que la media del Kahoot previo (segundo parámetro) por ser un rango de valores positivos.
+
+Prueba de Hipótesis
+Planteamiento de Hipótesis
+Hipótesis científica: Hay diferencia entre el rendimiento promedio en el primer quiz Kahoot y el del segundo quiz Kahoot.
+
+Hipótesis estadística: Hay diferencia entre las medias del puntaje obtenido en el primer quiz Kahoot y el segundo quiz de Kahoot.
+
+Hipótesis nula: No hay diferencia entre las medias del puntaje obtenido en el primer quiz Kahoot y el segundo quiz de Kahoot.
+
+Comando en R
+t.test(DatosAprendizaje$Kahootpre, DatosAprendizaje$Kahootpost, paired=TRUE)
+
+
+    Paired t-test
+
+data:  DatosAprendizaje$Kahootpre and DatosAprendizaje$Kahootpost
+t = -3.7841, df = 39, p-value = 0.0005191
+alternative hypothesis: true mean difference is not equal to 0
+95 percent confidence interval:
+ -2706.7802  -821.0698
+sample estimates:
+mean difference 
+      -1763.925 
+Estadístico de Prueba
+Es un valor de t con n-1 grado de libertad.
+
+Decisión
+Como el p-valor es 0.0005191 se puede rechazar la hipótesis nula con cualquiera de los niveles de significancia posibles (1%, 5%, 10%).
+
+Conclusión
+Como se rechaza la hipótesis nula:
+
+Hay diferencia estadísticamente significativa entre las medias del puntaje obtenido en el primer quiz Kahoot y el segundo quiz de Kahoot.
+
+Correlación de Pearson
+Se quiere determinar si hay relación lineal entre los puntajes obtenidos en un quiz de Kahoot y las notas del primer parcial.
+
+Condiciones (Supuestos) y Distribución muestral
+Es necesario comprobar si las poblaciones de las que provienen las variables son normales.
+
+Por el momento se va a asumir que sí lo son, para poder utilizar el método propuesto.
+
+Ver en el próximo instructivo: Prueba de Normalidad.
+
+Prueba de Hipótesis
+Planteamiento de Hipótesis
+Hipótesis científica: Hay relación lineal entre el puntaje obtenido en el primer quiz y la nota del primer parcial.
+
+Hipótesis estadística: Hay correlación entre las variables del puntaje obtenido en el primer quiz y de la nota del primer parcial.
+
+Hipótesis nula: No hay correlación entre las variables del puntaje obtenido en el primer quiz y de la nota del primer parcial.
+
+Comando en R
+cor.test(DatosAprendizaje$Kahootpre,DatosAprendizaje$P1)
+
+
+    Pearson's product-moment correlation
+
+data:  DatosAprendizaje$Kahootpre and DatosAprendizaje$P1
+t = 4.2286, df = 38, p-value = 0.0001425
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.3085331 0.7457699
+sample estimates:
+      cor 
+0.5656749 
+Estadístico de Prueba
+Es un valor de t con n-2 grados de libertad.
+
+Decisión
+Como el p-valor es 0.0001425, se puede rechazar la hipótesis nula con cualquiera de los niveles de significancia posibles (1%, 5%, 10%).
+
+Conclusión
+Como se rechaza la hipótesis nula:
+
+Hay correlación entre las variables del puntaje obtenido en el primer quiz y de la nota del primer parcial.
