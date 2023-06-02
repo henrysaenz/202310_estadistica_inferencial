@@ -1,0 +1,53 @@
+nstructivo 5: Prueba de Bondad de Ajuste
+AUTHOR
+Dipl.-Math. Natalia Hernández Vargas
+
+Prueba de Bondad de Ajuste
+Las pruebas de bondad de ajuste tienen como objetivo comprobar si la distribución de una muestra proviene de una distribución de probabilidad conocida. Para el caso de querer comprobar si los datos de una muestra provienen o no de una distribución normal puede utilizarse la prueba de Kolmogorov-Smirnov.
+
+Prueba de Kolmogorov-Smirnov
+Esta prueba tiene como finalidad evaluar si una muestra proviene de cierta distribución continua conocida. En este curso, será utilizada únicamente para comprobar si provienen de una distribución normal.
+
+Planteamiento de hipótesis
+Hipótesis estadística: Los datos no provienen de una distribución normal (Los datos no son normales)
+
+Hipótesis nula: Los datos provienen de una distribución normal (Los datos son normales)
+
+Estadístico de prueba
+Para calcular el estadístico de prueba D y su respectivo p-valor, se utiliza el siguiente comando:
+
+ks.test(BD$variable,"pnorm",mean(BD$variable),sd(BD$variable))
+
+donde BDes la base de datos y variable la variable en cuestión.
+
+Decisión y conclusión
+Si el p-valor es menor que el nivel de significancia, los datos no son normales.
+Si el p-valor es mayor que el nivel de significancia, no puede rechazarse la hipótesis nula de que los datos son normales, por lo tanto se asume normalidad.
+Ejemplos
+Se presentan dos casos usando la base de datos iris sobre mediciones de tres especies de flores.
+
+Caso donde la muestra proviene de una distribución normal
+Se quiere comprobar si la longitud del sépalo (Sepal.Length) proviene de una distribución normal. Por lo tanto, se calcula el estadístico de prueba D y su p-valor correspondiente a continuación:
+
+ks.test(iris$Sepal.Length,"pnorm",mean(iris$Sepal.Length),sd(iris$Sepal.Length))
+
+
+    Asymptotic one-sample Kolmogorov-Smirnov test
+
+data:  iris$Sepal.Length
+D = 0.088654, p-value = 0.1891
+alternative hypothesis: two-sided
+El p-valor es mayor que cualquier nivel de significancia al ser 0.1891. Por lo tanto, la longitud del sépalo proviene de una distribución normal.
+
+Caso donde la muestra no proviene de una distribución normal
+Se quiere comprobar si la longitud del pétalo (Petal.Length) proviene de una distribución normal. Por lo tanto, se calcula el estadístico de prueba D y su p-valor correspondiente a continuación:
+
+ks.test(iris$Petal.Length,"pnorm",mean(iris$Petal.Length),sd(iris$Petal.Length))
+
+
+    Asymptotic one-sample Kolmogorov-Smirnov test
+
+data:  iris$Petal.Length
+D = 0.19815, p-value = 1.532e-05
+alternative hypothesis: two-sided
+El p-valor es menor que cualquier nivel de significancia al ser 0.00001532. Por lo tanto, la longitud del pétalo no proviene de una distribución normal.
