@@ -1,0 +1,45 @@
+Taller 2 Análisis Univariado
+AUTHOR
+Dipl.-Math. Natalia Hernández Vargas
+
+Inicie un R script y guárdelo con el nombre Taller2ApellidoNombre.R en el que desarrollará los siguientes ejercicios.
+
+En este taller se espera que usted sea capaz de:
+
+Manipular un conjunto de datos teniendo en cuenta el diccionario de variables que lo describe.
+
+Calcular intervalos de confianza.
+
+Comprobar hipótesis con pruebas estadísticas.
+
+Caso de Estudio: Barómetro de las Américas
+La base de datos y el diccionario de las variables se encuentran en Brightspace.
+
+Ejercicio 1: Análisis exploratorio de un índice del Barómetro de las Américas
+Escoja un índice de los propuestos para hacer el análisis (revise el diccionario de variables para esto).
+
+Calcule los intervalos de confianza del valor promedio del índice del 90%, 95% y 99%, teniendo en cuenta y mencionando la distribución muestral de la media del caso.
+
+Calcule los intervalos de confianza del valor promedio del índice del 95% por cada región del país.
+
+Analice los resultados y argumente si en alguna región del país el valor promedio del índice es considerablemente mayor.
+
+Ejercicio 2: Análisis exploratorio del nivel socioeconómico
+Calcule los intervalos de confianza de la proporción de colombianos en nivel socioeconómico alto del 90%, 95% y 99%.
+
+Calcule los intervalos de confianza de la proporción de colombianos en nivel socioeconómico alto del 95% por cada sexo autoreportado.
+
+Argumente si a nivel poblacional se puede afirmar que la proporción de colombianos en nivel socioeconómico alto es menos de la mitad.
+
+Argumente si a nivel poblacional se puede afirmar que la proporción de mujeres en nivel socioecómico alto es menor de la mitad.
+
+Ejercicio 3: Análisis confirmatorio de un índice del Barómetro de las Américas
+Con el otro índice (no el escogido en el ejercicio 1), haga los análisis correspondientes para comfirmar las siguientes hipótesis.
+
+El promedio del índice es mayor a 17 puntos.
+
+El promedio del índice es menor a 18 puntos.
+
+El promedio del índice es diferente de 17,5 puntos.
+
+Compruebe el cálculo del estadístico de prueba calculado por R con la ecuación para tal fin.
