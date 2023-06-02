@@ -1,0 +1,152 @@
+Instructivo 4: Regresión Lineal Simple
+AUTHOR
+Dipl.-Math. Natalia Hernández Vargas
+
+Ingresar datos
+Importe los datos que están en el archivo “RLSDatosNumericos.xlsx” que se puede descargar en Brightspace. En el caso de lograrlo, los datos deben verse así:
+
+head(RLSDatosNumericos)
+
+# A tibble: 6 × 2
+  MemoriaVisualCubos  Edad
+               <dbl> <dbl>
+1                 11    18
+2                  7    19
+3                  5    19
+4                  7    18
+5                  6    18
+6                  7    18
+El comando head permite ver las primeras 5 observaciones de una base de datos en particular. En este caso es utilizado para no mostrar las 20 observaciones totales.
+
+Este caso de ejemplo son las mediciones realizadas a 20 sujetos en la prueba de cubos de Corsi para valorar sus capacidades de atención, concentración y memoria de trabajo visoespacial:
+
+MemoriaVisualCubos son la cantidad de cubos de la secuencia más larga lograda. Entre mayor es la cantidad, mejor sus capacidades.
+
+Edad son las edades del participante.
+
+Análisis descriptivo y gráfico
+Para graficar el diagrama de dispersión de la edad y la cantidad de cubos recordados:
+
+plot(RLSDatosNumericos$Edad,RLSDatosNumericos$MemoriaVisualCubos,
+     xlab="Edad", ylab="Cantidad de Cubos")
+
+
+
+Los argumentos xlab="Edad" y ylab="Cantidad de Cubos" son para cambiar los nombres de los ejes. Dentro de las comillas se escribe el nombre deseado.
+
+El Coeficiente de Correlación
+El coeficiente de correlación de dos variables es la medida que describe qué tan bien una variable es explicada por otra. El coeficiente se encuentra en el rango de -1 y 1. Si el valor es negativo, es una correlación negativa; si es positivo, es una correlación positiva; y si es igual a cero, no hay correlación.
+
+Para calcular el coeficiente de correlación de Pearson entre las variables:
+
+cor(RLSDatosNumericos$Edad,RLSDatosNumericos$MemoriaVisualCubos)
+
+[1] -0.5627827
+En el caso de ejemplo, se evidencia una correlación negativa entre las variables, es decir, entre más edad tiene el participante, menor será la cantidad de cubos recordados.
+
+Sin embargo, este resultado es descriptivo, por lo que requiere una prueba de hipótesis para poder concluirlo a nivel poblacional.
+
+Prueba de Correlación de Pearson
+La prueba de Correlación de Pearson es la prueba de hipótesis para evaluar la correlación de variables numéricas. La hipótesis estadística correspondiente a esta prueba plantea que existe correlación a nivel poblacional entre las variables evaluadas. Por lo tanto, la hipótesis nula plantea que no hay correlación entre las variables.
+
+En el caso de ejemplo, la hipótesis estadística es: Existe correlación entre la edad y la candidad de cubos recordados.
+
+El comando para esto sería entonces:
+
+cor.test(RLSDatosNumericos$Edad,RLSDatosNumericos$MemoriaVisualCubos)
+
+
+    Pearson's product-moment correlation
+
+data:  RLSDatosNumericos$Edad and RLSDatosNumericos$MemoriaVisualCubos
+t = -2.8885, df = 18, p-value = 0.009784
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.8048590 -0.1601449
+sample estimates:
+       cor 
+-0.5627827 
+Interpretación de la prueba
+Estadístico de Prueba La evidencia muestral para contrastar con la hipótesis nula se resume en el estadístico de prueba. En el caso de la prueba de correlación de Pearson, el estadístico de prueba sigue una distribución t con n-2 grados de libertad, donde n es el tamaño de la muestra.
+En el caso de ejemplo, el estadístico de prueba es entonces t = -2.8885, df = 18, es decir un valor t de -2,8885 con 18 grados de libertad.
+
+Decisión El estadístico de prueba se traduce al valor de la probabilidad de cometer el error de rechazar la hipótesis nula cuando no era correcto hacerlo. Esta probabilidad es llamada p-valor. El objetivo es entonces decidir rechazar la hipótesis nula siempre y cuando el p-valor sea mínimo. El nivel de significancia para decidir que el p-valor es lo suficientemente pequeño es 0.05 (5\%).
+En el caso de ejemplo, el p-valor es p-value =  0.009784, por lo que se rechaza la hipótesis nula al ser menor a 0.05.
+
+Conclusión Si la decisión es rechazar la hipótesis nula, se puede afirmar la hipótesis estadística soportada por los resultados estadísticamente significativos. Si la decisión es no poder rechazar la hipótesis nula, no hay resultados estadísticamente significativos para afirmar la hipótesis estadística.
+En el caso de ejemplo, hay correlación estadísticamente significativa entre la edad y la candidad de cubos recordados (t = -2,8885, g.d.l.=18, p<0.05), siendo que a mayor edad tiene el participante, menor será la cantidad de cubos recordados.
+
+Regresión Lineal Simple
+La regresión lineal simple tiene como objetivo modelar pares de datos de dos variables con una línea recta. La línea en cuestión se llama recta de mejor ajuste o recta de regresión. Esta recta es descrita por su pendiente y su intersección con el eje Y.
+
+Para medir estos atributos construyendo la regresión lineal, se utiliza el siguiente comando:
+
+lm(RLSDatosNumericos$MemoriaVisualCubos~RLSDatosNumericos$Edad)
+
+
+Call:
+lm(formula = RLSDatosNumericos$MemoriaVisualCubos ~ RLSDatosNumericos$Edad)
+
+Coefficients:
+           (Intercept)  RLSDatosNumericos$Edad  
+               8.71865                -0.09994  
+En este caso, se está tomando como variable dependiente MemoriaVisualCubos y como variable explicativa la Edad.
+
+En Coefficients aparecen el valor de la intersección con el eje Y en (intercept) 8.71865 y la pendiente en Dia5DatosNumericos$Edad -0.09994.
+
+La pendiente y el tipo de correlación deben ser coherentes, por eso en este caso es negativa al igual que la correlación.
+
+Esta recta se puede agregar al diagrama de dispersión así:
+
+Primero hay que guardar los resultados en una variable:
+
+regresion1 <- lm(RLSDatosNumericos$MemoriaVisualCubos~RLSDatosNumericos$Edad)
+
+Luego se grafica el diagrama de dispersión agregando el comando abline para agregar la recta de regresión guardada en regresion1:
+
+plot(RLSDatosNumericos$Edad,RLSDatosNumericos$MemoriaVisualCubos,
+     ylab="Cantidad de Cubos",xlab="Edad")
+abline(regresion1,col="red")
+
+
+
+A modo de ejemplo, se cambió el color de la recta con el argumento col="red".
+
+El modelo de regresión siempre se podrá describir, sin embargo, su eficacia para explicar el fenómeno que está modelando es comprobado con la prueba de significancia de la regresión lineal.
+
+Prueba de Significancia de la Regresión Lineal
+La prueba de Significancia de la Regresión Lineal es la prueba de hipótesis para determinar si el modelo de regresión lineal es el adecuado. La hipótesis estadística correspondiente a esta prueba plantea que hay una relación lineal entre las variables, es decir, que la pendiente es diferente de 0. Por lo tanto, la hipótesis nula plantea que no hay relación lineal entre las variables siendo la pendiente igual a 0.
+
+En el caso de ejemplo, la hipótesis estadística es: Existe relación lineal entre la edad y la candidad de cubos recordados.
+
+El comando para ver los resultados de esta prueba es entonces:
+
+summary(regresion1)
+
+
+Call:
+lm(formula = RLSDatosNumericos$MemoriaVisualCubos ~ RLSDatosNumericos$Edad)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9197 -0.9197  0.0803  0.3048  4.0803 
+
+Coefficients:
+                       Estimate Std. Error t value Pr(>|t|)    
+(Intercept)             8.71865    0.89372   9.755 1.31e-08 ***
+RLSDatosNumericos$Edad -0.09994    0.03460  -2.889  0.00978 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.589 on 18 degrees of freedom
+Multiple R-squared:  0.3167,    Adjusted R-squared:  0.2788 
+F-statistic: 8.344 on 1 and 18 DF,  p-value: 0.009784
+Interpretación de la prueba
+Estadístico de Prueba La evidencia muestral para contrastar con la hipótesis nula se resume en el estadístico de prueba. En el caso de la prueba de Significancia de la Regresión Lineal, el estad?stico de prueba sigue una distribución F con 1 y n-2 grados de libertad, donde n es el tamaño de la muestra.
+En el caso de ejemplo, el estadístico de prueba es entonces F-statistic: 8.344 on 1 and 18 DF, es decir un valor F de 8,344 con 1 y 18 grados de libertad.
+
+Decisión El estadístico de prueba se traduce al valor de la probabilidad de cometer el error de rechazar la hipótesis nula cuando no era correcto hacerlo. Esta probabilidad es llamada p-valor. El objetivo es entonces decidir rechazar la hipótesis nula siempre y cuando el p-valor sea m?nimo. El nivel de significancia para decidir que el p-valor es lo suficientemente peque?o es 0.05 (5\%).
+En el caso de ejemplo, el p-valor es p-value: 0.009784, por lo que se rechaza la hipótesis nula al ser menor a 0.05.
+
+Conclusión Si la decisión es rechazar la hipótesis nula, se puede afirmar la hipótesis estadística soportada por los resultados estadísticamente significativos. Si la decisión es no poder rechazar la hipótesis nula, no hay resultados estadísticamente significativos para afirmar la hipótesis estadística.
+En el caso de ejemplo, hay relación lineal estadísticamente significativa entre la edad y la candidad de cubos recordados (F=8,344, g.d.l.=1 y 18, p<0.05), siendo que a mayor edad tiene el participante, menor ser? la cantidad de cubos recordados.
