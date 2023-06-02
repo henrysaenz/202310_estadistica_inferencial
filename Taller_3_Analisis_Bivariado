@@ -1,0 +1,28 @@
+Taller 3 Análisis bivariado
+AUTHOR
+Dipl.-Math. Natalia Hernández Vargas
+
+Inicie un R script y guárdelo con el nombre Taller3ApellidoNombre.R en el que desarrollará los siguientes ejercicios.
+
+En este taller se espera que usted sea capaz de:
+
+Identificar el ambiente de análisis.
+
+Calcular intervalos de confianza.
+
+Comprobar hipótesis con pruebas estadísticas.
+
+Caso de Estudio: Barómetro de las Américas
+La base de datos y el diccionario de las variables se encuentran en Brightspace, siendo los mismos del taller pasado.
+
+Ejercicio 1: Análisis exploratorio bivariado
+Comprobar si se puede afirmar que hay diferencia significativa en el promedio del índice sobre Paz, Posconflicto y Reconciliación entre hombres y mujeres de manera exploratoria. Complementar el análisis con un gráfico descriptivo.
+Ejercicio 2: Análisis confirmatorio bivariado
+Probar si hay relación entre el sexo y el nivel socioeconómico. Complementar el análisis con un gráfico descriptivo.​
+
+Probar si hay relación lineal entre el índice sobre Actitudes y Opiniones de las Mujeres y el índice sobre Paz, Posconflicto y Reconciliación. El caso de que sea significativa, mencione el tipo de correlación.​Complementar el análisis con un gráfico descriptivo.
+
+Probar si hay diferencia en el promedio del índice sobre Actitudes y Opiniones de las Mujeres entre entre hombres y mujeres de manera confirmatoria.​Complementar el análisis con un gráfico descriptivo.
+
+Ejercicio 3: Planteamiento de hipótesis y su análisis
+Plantear una hipótesis de comparación de proporciones con las variables de esta base de datos y pruebe si se puede afirmar con significancia estadística. Complementar el análisis con un gráfico descriptivo.
